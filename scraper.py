@@ -5,10 +5,11 @@ from selenium.webdriver.common.keys import Keys
 car_vin=pd.read_csv("clean_Vins.csv")
 new_vin=car_vin['Vin']
 filename="cars2.csv"
-f=open(filename,"w")
+f=open(filename,"a")
 header="Vin,Style,Brand\n"
 f.write(header)
-for i in range(len(new_vin)):
+x=input("scraper.py")
+for i in range(int(x),len(new_vin)):
     vin=new_vin[i]
     f.write(vin)
     my_url="https://vpic.nhtsa.dot.gov/decoder/Decoder"
