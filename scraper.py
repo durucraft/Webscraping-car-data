@@ -2,13 +2,17 @@ from selenium import webdriver
 import time
 import pandas as pd
 from selenium.webdriver.common.keys import Keys
+#open csv and grab vin 
 car_vin=pd.read_csv("clean_Vins.csv")
 new_vin=car_vin['Vin']
+#create new file to write information 
 filename="cars2.csv"
 f=open(filename,"a")
 header="Vin,Style,Brand\n"
 f.write(header)
+# create a input to start application where informtion 
 x=input("scraper.py")
+# create open google webdriver 
 for i in range(int(x),len(new_vin)):
     vin=new_vin[i]
     f.write(vin)
