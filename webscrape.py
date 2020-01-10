@@ -4,18 +4,17 @@
 from bs4 import BeautifulSoup as bs
 from urllib.request import urlopen as UReq
 import time
-#opens a connection to grab the page
-start_time=time.time()
+#creating cvs file to write information into
 filename="cars.csv"
 f=open(filename,"w")
 headers="Name ,Year ,Miles ,Location ,Extrior ,Style ,Interior ,MPG ,Engine ,Transmission ,DriveType ,FuelType ,Price ,Vin\n"
 f.write(headers)
 link=set()
-for z in range(181,333):
+for z in range(189,333):
     time.sleep(10)
     link.clear()
     my_url="https://www.truecar.com/used-cars-for-sale/listings/location-randolph-ma/?page="+str(z)+"&searchRadius=100&sort[]=distance_asc_script"
-    #opens a connection to grab the pag
+    #opens a connection to grab the page
     uClient=UReq(my_url)
     page_html= uClient.read()
     uClient.close()
@@ -23,13 +22,16 @@ for z in range(181,333):
     page_soup=bs(page_html,'html.parser')
     # gets each products
     Listing=page_soup.findAll("div",{"class":"flex-column flex-sm-row card margin-top-3 card_1hx6mcr"})
-    #print(Listing[0])
-    i=0 
+    i=0
+    # gets the fisrt car listing
     for lists in Listing:
         lists=Listing[i]
         i=i+1
+        # find all the tags with a
         for links in lists.findAll('a'):
+            #finds all the attribute name with href
             link.add(links.get('href'))
+   #get link attribute vaule for a car
     for links in link.copy():
         links=link
         used_url='https://www.truecar.com'+links.pop()
@@ -38,6 +40,7 @@ for z in range(181,333):
         page_htmls= uClients.read()
         use_url=bs(page_htmls,'html.parser')
         carslisting=use_url.findAll("div",{"class":"mainContainer_mm7knf"})
+        # get car information using HtML tags
         for listing in carslisting:
             car_name=listing.findAll("div",{"class":"text-truncate heading-3 margin-right-2 margin-right-sm-3"})
             name=car_name[0].text
@@ -47,6 +50,7 @@ for z in range(181,333):
             miles=car_mile[0].text
             car_location=listing.findAll("span",{"data-test":"usedVdpHeaderLocation"})
             location=car_location[0].text
+            #write inforrmation into a cvs file
             f.write(name+","+ctype+","+miles.replace(",","")+","+location.replace(",",""))
             car_info=use_url.findAll("div",{"class":"row row-2 padding-2"})
             j=0
