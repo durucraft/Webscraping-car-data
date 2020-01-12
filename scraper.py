@@ -17,18 +17,22 @@ for i in range(int(x),len(new_vin)):
     vin=new_vin[i]
     f.write(vin)
     my_url="https://vpic.nhtsa.dot.gov/decoder/Decoder"
-    #opens a connection to grab the pag
+    #opens a connection to grab the page
     driver = webdriver.Chrome()
     driver.get(my_url)
+    #find element in html
     search= driver.find_element_by_name("VIN")
+    #send the value from list to be search up
     search.send_keys(new_vin[i])
     search.send_keys(Keys.RETURN)
-    #html parsing
+    #find elements by xpath 
     style=driver.find_element_by_xpath('/html/body/div[2]/div[3]/div[2]/div/div[2]/div[2]/div[1]/p[6]')
     make=driver.find_element_by_xpath('/html/body/div[2]/div[3]/div[2]/div/div[2]/div[2]/div[1]/p[4]')
     car_style=style.text
     car_make=make.text
+    #write the element to csv file
     f.write((",")+car_style)
     f.write((",")+car_make.replace(",","")+'\n')
+    # waits so vaules could be copied
     time.sleep(10)
     driver.close()
