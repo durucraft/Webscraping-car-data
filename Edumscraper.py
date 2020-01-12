@@ -11,7 +11,7 @@ header="Year,Brand,vec_name,style,engine,hp,curbweight,index,dropindex\n"
 year=car_vec.Year
 Brand=car_vec.Brand
 vec_name=car_vec.vec_name
-#need to find where vaules start
+#need to find where values start
 guess='\n'
 x=input("Edumscraper.py")
 #loop through range of year
@@ -22,23 +22,23 @@ for i in range(int(x),len(year)):
         f.write(str(year[i]))
         f.write((",")+Brand[i])
         f.write((",")+vec_name[i])
-        #driver being open
+        #chromo driver is open
         driver = webdriver.Chrome()
         driver.get(my_url)
-        #waits to do anything until the xpath is load in
+        #waits to do anything until the xpath is loaded in
         WebDriverWait(driver,5).until(EC.presence_of_element_located((By.XPATH, "//*[@id='Overview-section-title-content']")))
-        #check if advertizement is load and cloase it if not keeps running
+        #check if advertizement is loaded and close it if there is any if not keeps the loop running
         try:
             driver.find_element_by_xpath("/html/body/div[1]/div/div[2]/div[2]/div/span").click()
         except:
             pass
-        #scroll down so the drop down menu could be seen fully by the script
+        #scrolls down so the drop down menu could be seen fully by the script
         driver.execute_script("window.scrollTo(0, 150)") 
-        # open drop down menu
+        # opens drop down menu
         driver.find_element_by_xpath("//*[@id='Overview-section-title-content']/table/thead/tr/th[2]/div[1]/button").click()
-        #try catch need so when the while loop reachs then end could break out the loop
+        #try catch need so when the while loop reachs the end it could break out of the loop
         try:
-            #since the first vaule is load in already need special condition cause its longer than other items in drop down menu
+            #since the first value is already loaded in needs special condition
             if j==1:
                #grabs text information of the item
                 driver.find_element_by_xpath('/html/body/div[1]/div/main/div[1]/div[3]/div/table/thead/tr/th[2]/div[1]/div/button['+str(j)+']')
@@ -53,7 +53,7 @@ for i in range(int(x),len(year)):
                 eng=car_P[indices[2]+1:indices[3]]
                 print(sty)
             elif j>1:
-                #goes down the drop list and grabs infromtion till it breaks
+                #goes through the drop down list and grabs infromtion till it breaks
                 driver.find_element_by_xpath('/html/body/div[1]/div/main/div[1]/div[3]/div/table/thead/tr/th[2]/div[1]/div/button['+str(j)+']').click()
                 car_ps= driver.find_element_by_id('Overview-section-title-content').text
                 hp=driver.find_element_by_xpath('//*[@id="Engine-section-title-content"]/table/tbody/tr[3]/td[1]').text
